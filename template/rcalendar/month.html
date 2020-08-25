@@ -26,9 +26,13 @@
         <div class="scrollable" style="height: 200px">
             <table class="table table-bordered table-striped table-fixed">
                 <tr ng-repeat="event in selectedDate.events" ng-if="selectedDate.events">
-                    <td ng-if="!event.allDay" class="monthview-eventdetail-timecolumn">{{event.startTime|date: 'HH:mm'}}
+                    <td ng-if="!event.allDay && rangeIsSameDate()" class="monthview-eventdetail-timecolumn">{{event.startTime | timezone:event.timezone:'h:mm A'}}
                         -
-                        {{event.endTime|date: 'HH:mm'}}
+                        {{event.endTime | timezone:event.timezone:'h:mm A'}}  {{event.startTime | timezoneAbbr:event.timezone}}
+                    </td>
+                    <td ng-if="!event.allDay && !rangeIsSameDate()" class="monthview-eventdetail-timecolumn">{{event.startTime | timezone:event.timezone:'MMM D h:mm A'}}
+                        -
+                        {{event.endTime | timezone:event.timezone:'MMM D h:mm A'}}  {{event.startTime | timezoneAbbr:event.timezone}}
                     </td>
                     <td ng-if="event.allDay" class="monthview-eventdetail-timecolumn">{{allDayLabel}}</td>
                     <td class="event-detail" ng-click="eventSelected({event:event})">{{event.title}}</td>

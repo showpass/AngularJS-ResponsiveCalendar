@@ -568,6 +568,12 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                     return (1 + Math.round(diff / 6.048e8)); // 6.048e8 ms per week
                 }
 
+                scope.rangeIsSameDate = function () {
+                    const startDate = ctrl.range.startTime,
+                        endDate = ctrl.range.endTime;
+                    return startDate.getDate() === endDate.getDate() && startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear();
+                };
+
                 ctrl.refreshView();
             }
         };
@@ -1202,9 +1208,13 @@ angular.module("template/rcalendar/month.html", []).run(["$templateCache", funct
     "        <div class=\"scrollable\" style=\"height: 200px\">\n" +
     "            <table class=\"table table-bordered table-striped table-fixed\">\n" +
     "                <tr ng-repeat=\"event in selectedDate.events\" ng-if=\"selectedDate.events\">\n" +
-    "                    <td ng-if=\"!event.allDay\" class=\"monthview-eventdetail-timecolumn\">{{event.startTime|date: 'HH:mm'}}\n" +
+    "                    <td ng-if=\"!event.allDay && rangeIsSameDate()\" class=\"monthview-eventdetail-timecolumn\">{{event.startTime | timezone:event.timezone:'h:mm A'}}\n" +
     "                        -\n" +
-    "                        {{event.endTime|date: 'HH:mm'}}\n" +
+    "                        {{event.endTime | timezone:event.timezone:'h:mm A'}}  {{event.startTime | timezoneAbbr:event.timezone}}\n" +
+    "                    </td>\n" +
+    "                    <td ng-if=\"!event.allDay && !rangeIsSameDate()\" class=\"monthview-eventdetail-timecolumn\">{{event.startTime | timezone:event.timezone:'MMM D h:mm A'}}\n" +
+    "                        -\n" +
+    "                        {{event.endTime | timezone:event.timezone:'MMM D h:mm A'}}  {{event.startTime | timezoneAbbr:event.timezone}}\n" +
     "                    </td>\n" +
     "                    <td ng-if=\"event.allDay\" class=\"monthview-eventdetail-timecolumn\">{{allDayLabel}}</td>\n" +
     "                    <td class=\"event-detail\" ng-click=\"eventSelected({event:event})\">{{event.title}}</td>\n" +

@@ -567,6 +567,12 @@ angular.module('ui.rCalendar', [])
                     return (1 + Math.round(diff / 6.048e8)); // 6.048e8 ms per week
                 }
 
+                scope.rangeIsSameDate = function () {
+                    const startDate = ctrl.range.startTime,
+                        endDate = ctrl.range.endTime;
+                    return startDate.getDate() === endDate.getDate() && startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear();
+                };
+
                 ctrl.refreshView();
             }
         };
